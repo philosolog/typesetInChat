@@ -15,7 +15,7 @@ import { ModeSwitch, openEditor, PreviewImage, usePreview } from "@plugins/types
 import { Devs } from "@utils/constants";
 import definePlugin, { IconComponent, PluginNative } from "@utils/types";
 import { Message } from "@vencord/discord-types";
-import { AuthenticationStore, ChannelStore, ComponentDispatch, DraftStore, DraftType, Menu, React, ReactDOM, showToast, Toasts, useEffect, useLayoutEffect, useState, useStateFromStores } from "@webpack/common";
+import { AuthenticationStore, ChannelStore, ComponentDispatch, DraftStore, DraftType, Menu, React, ReactDOM, showToast, useEffect, useLayoutEffect, useState, useStateFromStores } from "@webpack/common";
 
 const Native = VencordNative.pluginHelpers.TypesetInChat as PluginNative<typeof import("./native")>;
 
@@ -98,7 +98,7 @@ const onPreSend: MessageSendListener = (channelId, msg, _options, props) => {
 
     const source = msg.content;
     sendTypeset(channelId, { v: 1, mode: currentMode(), source }).catch(e => {
-        showToast(`Typeset failed: ${String(e?.message ?? e).slice(0, 200)}`, Toasts.Type.FAILURE);
+        showToast(`Typeset failed: ${String(e?.message ?? e).slice(0, 200)}`, "failure");
     });
 
     // Cancelling keeps the text in the box; clear it since the image was sent instead.
@@ -155,7 +155,7 @@ export default definePlugin({
         addMessagePreSendListener(onPreSend);
 
         const found = await Native.findTypst(settings.store.typstPath);
-        if (!found) showToast("TypesetInChat: Typst binary not found. Install it or set the path in plugin settings.", Toasts.Type.FAILURE);
+        if (!found) showToast("TypesetInChat: Typst binary not found. Install it or set the path in plugin settings.", "failure");
     },
 
     stop() {

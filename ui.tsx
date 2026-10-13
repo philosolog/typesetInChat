@@ -8,7 +8,7 @@ import ErrorBoundary from "@components/ErrorBoundary";
 import { editTypeset, Mode, recoverSource, render } from "@plugins/typesetInChat/core";
 import { openModal } from "@utils/modal";
 import { Message, RenderModalProps } from "@vencord/discord-types";
-import { Modal, React, showToast, Toasts, useEffect, useState } from "@webpack/common";
+import { Modal, React, showToast, useEffect, useState } from "@webpack/common";
 
 const PREVIEW_DEBOUNCE_MS = 400;
 
@@ -95,10 +95,10 @@ function EditorModal({ modalProps, message, initialSource, initialMode }: {
         setSaving(true);
         try {
             await editTypeset(message, { v: 1, mode, source });
-            showToast("Typeset image updated", Toasts.Type.SUCCESS);
+            showToast("Typeset image updated", "success");
             modalProps.onClose();
         } catch (e: any) {
-            showToast(`Failed to update: ${String(e?.message ?? e).slice(0, 200)}`, Toasts.Type.FAILURE);
+            showToast(`Failed to update: ${String(e?.message ?? e).slice(0, 200)}`, "failure");
             setSaving(false);
         }
     }
@@ -132,12 +132,12 @@ export async function openEditor(message: Message, fallbackMode: Mode) {
     try {
         entry = await recoverSource(message);
     } catch (e: any) {
-        showToast(`Could not recover source: ${String(e?.message ?? e).slice(0, 200)}`, Toasts.Type.FAILURE);
+        showToast(`Could not recover source: ${String(e?.message ?? e).slice(0, 200)}`, "failure");
         return;
     }
 
     if (!entry) {
-        showToast("No source found for this image. Set a Nougat endpoint in the plugin settings to rebuild it.", Toasts.Type.FAILURE);
+        showToast("No source found for this image. Set a Nougat endpoint in the plugin settings to rebuild it.", "failure");
         return;
     }
 
